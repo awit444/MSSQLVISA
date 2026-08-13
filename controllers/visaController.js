@@ -69,6 +69,38 @@ const insertData = async (req, res) => {
     }
 };
 
+// Handles fetching a specific transaction from MSSQL
+const getVisaData = async (req, res) => {
+    try {
+        const transId = req.params.id;
+        
+        // Ensure the table name is correct
+        const tableName = 'tblSales';
+
+        const pool = await getPool();
+        const request = pool.request();
+        
+        // Use parameterized query to prevent SQL injection
+        request.input('TransID', sql.Decimal(38, 0), transId);
+        
+        const query = `SELECT * FROM [${tableName}] WHERE TransID = @TransID`;
+        const result = await request.query(query);
+
+        if (result.recordset.length === 0) {
+            return res.status(404).json({ message: "Transaction not found." });
+        }
+
+        return res.status(200).json(result.recordset[0]);
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return res.status(500).json({
+            error: 'An error occurred while fetching data from the database.',
+            details: error.message
+        });
+    }
+};
+
 module.exports = {
-    insertData
+    insertData,
+    getVisaData
 };

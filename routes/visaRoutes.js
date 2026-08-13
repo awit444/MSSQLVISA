@@ -6,4 +6,8 @@ const visaController = require('../controllers/visaController');
 // Route to handle data insertion from the other system
 router.post('/', visaController.insertData);
 
+// GET /api/visa/:id
+// Route to fetch a specific transaction by TransID
+router.get('/:id', visaController.getVisaData);
+
 module.exports = router;
