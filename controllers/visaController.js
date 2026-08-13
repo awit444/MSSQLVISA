@@ -45,8 +45,10 @@ const insertData = async (req, res) => {
         const safeColumns = columns.map(col => `[${col}]`).join(', ');
 
         const query = `
+            SET IDENTITY_INSERT [${tableName}] ON;
             INSERT INTO [${tableName}] (${safeColumns}) 
-            VALUES (${values.join(', ')})
+            VALUES (${values.join(', ')});
+            SET IDENTITY_INSERT [${tableName}] OFF;
         `;
 
         // Execute the insert query
