@@ -3,8 +3,6 @@ const { getPool, sql } = require('../config/dbConfig');
 // Handles the insertion of data into MSSQL
 const insertData = async (req, res) => {
     try {
-        // 1. Extract data from the request body
-        // Example: const { firstName, lastName, passportNumber } = req.body;
         const payload = req.body;
 
         // Log the received payload for debugging
@@ -20,43 +18,44 @@ const insertData = async (req, res) => {
             return res.status(500).json({ error: 'Database connection is not established.' });
         }
 
-        // 2. Prepare the SQL query
-        // IMPORTANT: Replace 'YourTableName' with your actual table name
-        // and adjust the columns and input variables according to your schema.
+        // ==========================================
+        // 🚨 IMPORTANT: PUT YOUR TABLE NAME HERE! 🚨
+        const tableName = 'tblSales';
+        // ==========================================
 
-        /* 
-        Example Implementation:
-
-        const { firstName, lastName, passportNumber } = payload;
-        
         const request = pool.request();
-        // Add inputs to prevent SQL injection
-        request.input('FirstName', sql.VarChar, firstName);
-        request.input('LastName', sql.VarChar, lastName);
-        request.input('PassportNumber', sql.VarChar, passportNumber);
+        
+        const columns = Object.keys(payload);
+        const values = [];
+
+        // Dynamically build the parameters based on the JSON payload you send
+        // This avoids having to write out all 43 columns manually!
+        columns.forEach((key, index) => {
+            const paramName = `param${index}`;
+            let value = payload[key];
+            
+            // Convert 'NULL' string to actual null if needed
+            if (value === 'NULL') value = null;
+            
+            request.input(paramName, value);
+            values.push(`@${paramName}`);
+        });
+
+        // Wrap columns in brackets [ColName] to prevent issues with SQL reserved words
+        const safeColumns = columns.map(col => `[${col}]`).join(', ');
 
         const query = `
-            INSERT INTO YourTableName (FirstName, LastName, PassportNumber) 
-            VALUES (@FirstName, @LastName, @PassportNumber)
+            INSERT INTO [${tableName}] (${safeColumns}) 
+            VALUES (${values.join(', ')})
         `;
 
-        const result = await request.query(query);
-        */
+        // Execute the insert query
+        await request.query(query);
 
-        // ---------------------------------------------------------
-        // PLACEHOLDER: Since we don't know the exact schema yet, 
-        // this is a generic simulation of the insert.
-        // REMOVE this block and use the example above when you know the schema.
-
-        // await pool.request().query('SELECT 1'); // Just testing the connection
-        console.warn("WARNING: Insert query is not yet implemented. Please update controllers/visaController.js");
-        // ---------------------------------------------------------
-
-        // 3. Send a success response back to the calling system
+        // Send a success response back to the calling system
         return res.status(201).json({
-            message: 'Data successfully processed.',
-            receivedData: payload
-            // result: result.recordset // You can return the result if needed
+            message: 'Data successfully inserted into database!',
+            insertedColumns: columns.length
         });
 
     } catch (error) {
