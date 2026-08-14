@@ -28,9 +28,12 @@ const insertData = async (req, res) => {
             headerReq.input(`h_${key}`, header[key] === 'NULL' ? null : header[key]);
             headerVals.push(`@h_${key}`);
         });
+        const hasHeaderId = headerCols.includes('HeaderID');
         await headerReq.query(`
+            ${hasHeaderId ? 'SET IDENTITY_INSERT [tblOrderHeader] ON;' : ''}
             INSERT INTO [tblOrderHeader] (${headerCols.map(c => `[${c}]`).join(', ')}) 
             VALUES (${headerVals.join(', ')})
+            ${hasHeaderId ? 'SET IDENTITY_INSERT [tblOrderHeader] OFF;' : ''}
         `);
 
         // 2. Insert Details
@@ -42,9 +45,12 @@ const insertData = async (req, res) => {
                 detailReq.input(`d_${key}`, detail[key] === 'NULL' ? null : detail[key]);
                 dVals.push(`@d_${key}`);
             });
+            const hasDetailId = dCols.includes('DetailID');
             await detailReq.query(`
+                ${hasDetailId ? 'SET IDENTITY_INSERT [tblOrderDetails] ON;' : ''}
                 INSERT INTO [tblOrderDetails] (${dCols.map(c => `[${c}]`).join(', ')})
                 VALUES (${dVals.join(', ')})
+                ${hasDetailId ? 'SET IDENTITY_INSERT [tblOrderDetails] OFF;' : ''}
             `);
         }
 
@@ -58,9 +64,12 @@ const insertData = async (req, res) => {
                     payReq.input(`p_${key}`, payment[key] === 'NULL' ? null : payment[key]);
                     pVals.push(`@p_${key}`);
                 });
+                const hasPaymentId = pCols.includes('PaymentID');
                 await payReq.query(`
+                    ${hasPaymentId ? 'SET IDENTITY_INSERT [tblOrderPayment] ON;' : ''}
                     INSERT INTO [tblOrderPayment] (${pCols.map(c => `[${c}]`).join(', ')})
                     VALUES (${pVals.join(', ')})
+                    ${hasPaymentId ? 'SET IDENTITY_INSERT [tblOrderPayment] OFF;' : ''}
                 `);
             }
         }
@@ -75,9 +84,13 @@ const insertData = async (req, res) => {
                     discReq.input(`ds_${key}`, discount[key] === 'NULL' ? null : discount[key]);
                     dsVals.push(`@ds_${key}`);
                 });
+                // tblOrderDiscDetail uses PaymentID as its identity key according to the schema
+                const hasDiscPaymentId = dsCols.includes('PaymentID');
                 await discReq.query(`
+                    ${hasDiscPaymentId ? 'SET IDENTITY_INSERT [tblOrderDiscDetail] ON;' : ''}
                     INSERT INTO [tblOrderDiscDetail] (${dsCols.map(c => `[${c}]`).join(', ')})
                     VALUES (${dsVals.join(', ')})
+                    ${hasDiscPaymentId ? 'SET IDENTITY_INSERT [tblOrderDiscDetail] OFF;' : ''}
                 `);
             }
         }
@@ -99,7 +112,7 @@ const insertData = async (req, res) => {
                 console.error('Error rolling back transaction:', rollbackError);
             }
         }
-        
+
         console.error('Error inserting order data:', error);
         return res.status(500).json({
             error: 'An error occurred while inserting data. Transaction rolled back.',
@@ -112,13 +125,13 @@ const insertData = async (req, res) => {
 const getVisaData = async (req, res) => {
     try {
         const orderId = req.params.id; // Using orderCode here
-        
+
         const pool = await getPool();
         const request = pool.request();
-        
+
         request.input('OrderCode', sql.VarChar(20), orderId);
-        
-        const query = \`SELECT * FROM [tblOrderHeader] WHERE OrderCode = @OrderCode\`;
+
+        const query = `SELECT * FROM [tblOrderHeader] WHERE OrderCode = @OrderCode`;
         const result = await request.query(query);
 
         if (result.recordset.length === 0) {

@@ -10,5 +10,4 @@ WshShell.CurrentDirectory = strPath
 WshShell.Run "node index.js", 0, False
 
 ' Run Ngrok completely hidden in the background
-' NOTE TO OTHER DEVELOPERS: Update the domain below to your own free ngrok domain!
-WshShell.Run "ngrok http --domain=unpleasantly-micellar-refugia.ngrok-free.dev 3000", 0, False
+WshShell.Run "ngrok http --domain=extremely-accurate-mustang.ngrok-free.app 3000", 0, False

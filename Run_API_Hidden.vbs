@@ -3,4 +3,4 @@ Set WshShell = CreateObject("WScript.Shell")
 WshShell.Run "node C:\Users\MIS-WILBERT\Desktop\MSSQLVISA\index.js", 0, False
 
 ' Run Ngrok completely hidden in the background
-WshShell.Run "ngrok http --domain=unpleasantly-micellar-refugia.ngrok-free.dev 3000", 0, False
+WshShell.Run "ngrok http --domain=extremely-accurate-mustang.ngrok-free.app 3000", 0, False
