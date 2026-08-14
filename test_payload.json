@@ -1,0 +1,62 @@
+{
+    "header": {
+        "OrderCode": "ORD-2026-0001",
+        "OrderDateCreated": "2026-08-14",
+        "OrderTimeCreated": "08:11:00",
+        "EmployeeName": "Wilbert",
+        "EmployeeID": "EMP-100",
+        "TotalQty": 3,
+        "TotalAmt": 1500.50,
+        "TotalDisc": 50.00,
+        "DiscType": 1,
+        "DiscValue": "50",
+        "Vat": 180.06,
+        "VatSales": 1500.50,
+        "VatExempt": 0.00,
+        "LessVat": 0.00,
+        "TransStatus": 1,
+        "SubsidyAmt": 0.00,
+        "IsSaved": 1
+    },
+    "details": [
+        {
+            "OrderCode": "ORD-2026-0001",
+            "ItemCode": "ITM-001",
+            "ItemName": "Burger combo",
+            "Qty": 2,
+            "Price": 500.00,
+            "Subtotal": 1000.00
+        },
+        {
+            "OrderCode": "ORD-2026-0001",
+            "ItemCode": "ITM-002",
+            "ItemName": "Large Fries",
+            "Qty": 1,
+            "Price": 500.50,
+            "Subtotal": 500.50
+        }
+    ],
+    "payments": [
+        {
+            "OrderCode": "ORD-2026-0001",
+            "PayMethod": "CREDIT CARD",
+            "PayAmt": 1500.50,
+            "CustName": "John Doe",
+            "CardNo": "1234-XXXX-XXXX-5678",
+            "CardType": "VISA",
+            "AppCode": "APP-999",
+            "BatchNo": "BATCH-01"
+        }
+    ],
+    "discounts": [
+        {
+            "OrderCode": "ORD-2026-0001",
+            "CustName": "John Doe",
+            "DiscIDNo": "PWD-12345",
+            "TIN": "123-456-789",
+            "NameOfChild": null,
+            "Birthday": "1980-01-01",
+            "AgeOfChild": null
+        }
+    ]
+}
