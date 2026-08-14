@@ -131,14 +131,31 @@ const getVisaData = async (req, res) => {
 
         request.input('OrderCode', sql.VarChar(20), orderId);
 
-        const query = `SELECT * FROM [tblOrderHeader] WHERE OrderCode = @OrderCode`;
-        const result = await request.query(query);
-
-        if (result.recordset.length === 0) {
+        // 1. Get Header
+        const headerResult = await request.query(`SELECT * FROM [tblOrderHeader] WHERE OrderCode = @OrderCode`);
+        
+        if (headerResult.recordset.length === 0) {
             return res.status(404).json({ message: "Order not found." });
         }
 
-        return res.status(200).json(result.recordset[0]);
+        // 2. Get Details
+        const detailsResult = await request.query(`SELECT * FROM [tblOrderDetails] WHERE OrderCode = @OrderCode`);
+        
+        // 3. Get Payments
+        const paymentsResult = await request.query(`SELECT * FROM [tblOrderPayment] WHERE OrderCode = @OrderCode`);
+        
+        // 4. Get Discounts
+        const discountsResult = await request.query(`SELECT * FROM [tblOrderDiscDetail] WHERE OrderCode = @OrderCode`);
+
+        // Group everything together exactly like the POST payload format
+        const fullOrderData = {
+            header: headerResult.recordset[0],
+            details: detailsResult.recordset,
+            payments: paymentsResult.recordset,
+            discounts: discountsResult.recordset
+        };
+
+        return res.status(200).json(fullOrderData);
     } catch (error) {
         console.error('Error fetching data:', error);
         return res.status(500).json({

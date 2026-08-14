@@ -1,17 +1,17 @@
 {
     "header": {
-        "OrderCode": "ORD-2026-0001",
+        "OrderCode": "ORD-2026-0005",
         "OrderDateCreated": "2026-08-14",
-        "OrderTimeCreated": "08:11:00",
-        "EmployeeName": "Wilbert",
-        "EmployeeID": "EMP-100",
-        "TotalQty": 3,
-        "TotalAmt": 1500.50,
+        "OrderTimeCreated": "11:00:00",
+        "EmployeeName": "Joshua",
+        "EmployeeID": "EMP-102",
+        "TotalQty": 2,
+        "TotalAmt": 800.00,
         "TotalDisc": 50.00,
-        "DiscType": 1,
+        "DiscType": 2,
         "DiscValue": "50",
-        "Vat": 180.06,
-        "VatSales": 1500.50,
+        "Vat": 96.00,
+        "VatSales": 800.00,
         "VatExempt": 0.00,
         "LessVat": 0.00,
         "TransStatus": 1,
@@ -20,43 +20,43 @@
     },
     "details": [
         {
-            "OrderCode": "ORD-2026-0001",
-            "ItemCode": "ITM-001",
-            "ItemName": "Burger combo",
-            "Qty": 2,
-            "Price": 500.00,
-            "Subtotal": 1000.00
+            "OrderCode": "ORD-2026-0005",
+            "ItemCode": "ITM-005",
+            "ItemName": "Spaghetti",
+            "Qty": 1,
+            "Price": 300.00,
+            "Subtotal": 300.00
         },
         {
-            "OrderCode": "ORD-2026-0001",
-            "ItemCode": "ITM-002",
-            "ItemName": "Large Fries",
+            "OrderCode": "ORD-2026-0005",
+            "ItemCode": "ITM-008",
+            "ItemName": "Fried Chicken",
             "Qty": 1,
-            "Price": 500.50,
-            "Subtotal": 500.50
+            "Price": 500.00,
+            "Subtotal": 500.00
         }
     ],
     "payments": [
         {
-            "OrderCode": "ORD-2026-0001",
+            "OrderCode": "ORD-2026-0005",
             "PayMethod": "CREDIT CARD",
-            "PayAmt": 1500.50,
-            "CustName": "John Doe",
-            "CardNo": "1234-XXXX-XXXX-5678",
-            "CardType": "VISA",
-            "AppCode": "APP-999",
-            "BatchNo": "BATCH-01"
+            "PayAmt": 800.00,
+            "CustName": "Joshua",
+            "CardNo": "4111-2222-3333-4444",
+            "CardType": "MASTERCARD",
+            "AppCode": "APP-5555",
+            "BatchNo": "BAT-9999"
         }
     ],
     "discounts": [
         {
-            "OrderCode": "ORD-2026-0001",
-            "CustName": "John Doe",
-            "DiscIDNo": "PWD-12345",
-            "TIN": "123-456-789",
-            "NameOfChild": null,
-            "Birthday": "1980-01-01",
-            "AgeOfChild": null
+            "OrderCode": "ORD-2026-0005",
+            "CustName": "Joshua",
+            "DiscIDNo": "SC-987654321",
+            "TIN": "999-888-777",
+            "NameOfChild": "Tommy",
+            "Birthday": "2015-05-15",
+            "AgeOfChild": 11.00
         }
     ]
 }
