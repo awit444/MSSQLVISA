@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors()); // Enable CORS for the other system to access this API
-app.use(express.json()); // Parse incoming JSON payloads
+app.use(express.json({ type: '*/*' })); // Force parse incoming payloads as JSON even if Content-Type header is missing
 
 // Log all incoming requests so they appear in pm2 logs
 app.use((req, res, next) => {

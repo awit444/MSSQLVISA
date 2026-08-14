@@ -3,6 +3,7 @@ module.exports = {
     {
       name: "Node-API",
       script: "index.js",
+      node_args: "--no-warnings",
       autorestart: true,
       watch: false
     },

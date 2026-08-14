@@ -25,7 +25,11 @@ const insertData = async (req, res) => {
         const headerCols = Object.keys(header);
         const headerVals = [];
         headerCols.forEach(key => {
-            headerReq.input(`h_${key}`, header[key] === 'NULL' ? null : header[key]);
+            let val = header[key];
+            if (val === 'NULL' || (key.includes('Date') || key.includes('Time') || key.includes('Birthday')) && val === 'N/A') {
+                val = null;
+            }
+            headerReq.input(`h_${key}`, val);
             headerVals.push(`@h_${key}`);
         });
         const hasHeaderId = headerCols.includes('HeaderID');
@@ -42,7 +46,11 @@ const insertData = async (req, res) => {
             const dCols = Object.keys(detail);
             const dVals = [];
             dCols.forEach(key => {
-                detailReq.input(`d_${key}`, detail[key] === 'NULL' ? null : detail[key]);
+                let val = detail[key];
+                if (val === 'NULL' || (key.includes('Date') || key.includes('Time') || key.includes('Birthday')) && val === 'N/A') {
+                    val = null;
+                }
+                detailReq.input(`d_${key}`, val);
                 dVals.push(`@d_${key}`);
             });
             const hasDetailId = dCols.includes('DetailID');
@@ -61,7 +69,11 @@ const insertData = async (req, res) => {
                 const pCols = Object.keys(payment);
                 const pVals = [];
                 pCols.forEach(key => {
-                    payReq.input(`p_${key}`, payment[key] === 'NULL' ? null : payment[key]);
+                    let val = payment[key];
+                    if (val === 'NULL' || (key.includes('Date') || key.includes('Time') || key.includes('Birthday')) && val === 'N/A') {
+                        val = null;
+                    }
+                    payReq.input(`p_${key}`, val);
                     pVals.push(`@p_${key}`);
                 });
                 const hasPaymentId = pCols.includes('PaymentID');
@@ -81,7 +93,11 @@ const insertData = async (req, res) => {
                 const dsCols = Object.keys(discount);
                 const dsVals = [];
                 dsCols.forEach(key => {
-                    discReq.input(`ds_${key}`, discount[key] === 'NULL' ? null : discount[key]);
+                    let val = discount[key];
+                    if (val === 'NULL' || (key.includes('Date') || key.includes('Time') || key.includes('Birthday')) && val === 'N/A') {
+                        val = null;
+                    }
+                    discReq.input(`ds_${key}`, val);
                     dsVals.push(`@ds_${key}`);
                 });
                 // tblOrderDiscDetail uses PaymentID as its identity key according to the schema
