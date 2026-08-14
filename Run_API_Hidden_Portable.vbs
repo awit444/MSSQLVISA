@@ -6,8 +6,5 @@ Set WshShell = CreateObject("WScript.Shell")
 ' Set the working directory to wherever this script is located
 WshShell.CurrentDirectory = strPath
 
-' Run Node.js completely hidden in the background (using dynamic path)
-WshShell.Run "node index.js", 0, False
-
-' Run Ngrok completely hidden in the background
-WshShell.Run "ngrok http --domain=extremely-accurate-mustang.ngrok-free.app 3000", 0, False
+' Run PM2 with the ecosystem config completely hidden in the background
+WshShell.Run "cmd.exe /c pm2 start ecosystem.config.js", 0, False
