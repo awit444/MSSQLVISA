@@ -148,7 +148,23 @@ const getVisaData = async (req, res) => {
     }
 };
 
+// Fetch all orders
+const getAllVisaData = async (req, res) => {
+    try {
+        const pool = await getPool();
+        const request = pool.request();
+        const query = `SELECT TOP 50 * FROM [tblOrderHeader] ORDER BY OrderDateCreated DESC, OrderTimeCreated DESC`;
+        const result = await request.query(query);
+        
+        return res.status(200).json(result.recordset);
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return res.status(500).json({ error: 'An error occurred while fetching the data.' });
+    }
+};
+
 module.exports = {
     insertData,
-    getVisaData
+    getVisaData,
+    getAllVisaData
 };
